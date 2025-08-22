@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Главная — Note App{% endblock %}
+{% block content %}
+<section class="home">
+  <h1>Note App</h1>
+
+  {% if request.session.get('user_id') %}
+    <p>Твои последние заметки:</p>
+    {% if notes %}
+      <ul class="notes-list">
+        {% for n in notes %}
+          <li>{{ n.title or ("Заметка #" ~ n.id) }}</li>
+        {% endfor %}
+      </ul>
+      <p><a href="{{ url_for('web_notes:list_notes') }}">Все заметки</a></p>
+    {% else %}
+      <p>Пока пусто. <a href="{{ url_for('web_notes:create_note') }}">Создай первую заметку</a>.</p>
+    {% endif %}
+  {% else %}
+    <p>Привет! Войди или зарегистрируйся, чтобы создавать заметки и общаться в чате.</p>
+  {% endif %}
+</section>
+{% endblock %}

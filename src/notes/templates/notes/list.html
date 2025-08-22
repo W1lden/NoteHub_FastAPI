@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Мои заметки{% endblock %}
+
+{% block content %}
+<h1>Мои заметки</h1>
+<p><a class="button" href="/notes/new">Новая заметка</a></p>
+{% if notes and notes|length %}
+<ul class="note-list">
+    {% for n in notes %}
+    <li>
+        <a href="/notes/{{ n.id }}">{{ n.title }}</a>
+        <span class="muted">#{{ n.id }}</span>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Заметок пока нет.</p>
+{% endif %}
+{% endblock %}

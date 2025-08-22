@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Новая заметка{% endblock %}
+
+{% block content %}
+<h1>Новая заметка</h1>
+<form method="post" action="/notes">
+    <label>Заголовок</label>
+    <input type="text" name="title" required>
+    <label>Текст</label>
+    <textarea name="text" rows="8"></textarea>
+    <label>Категории</label>
+    <select name="category_ids" multiple size="5">
+        {% for c in categories %}
+        <option value="{{ c.id }}">{{ c.name }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Сохранить</button>
+</form>
+{% endblock %}

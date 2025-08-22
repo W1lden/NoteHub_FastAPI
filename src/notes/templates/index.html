@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Главная{% endblock %}
+
+{% block content %}
+    <h1>Добро пожаловать в Note App</h1>
+    {% if request.session.get("user_id") %}
+        <p>Вы вошли в систему. Можете просматривать свои заметки.</p>
+        <a href="/notes">Перейти к заметкам</a>
+    {% else %}
+        <p>Чтобы работать с заметками, войдите или зарегистрируйтесь.</p>
+    {% endif %}
+{% endblock %}

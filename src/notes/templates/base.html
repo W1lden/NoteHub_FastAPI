@@ -1,36 +1,45 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}Note Hub{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+  <meta charset="UTF-8">
+  <title>{% block title %}NoteHub{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
 </head>
 <body>
-    <header>
-        <a href="/" class="logo-link">
-            <img src="{{ url_for('static', path='img/logo.png') }}" alt="Logo" height="40">
-        </a>
-        <nav>
-            <a href="/">Главная</a>
-            <a href="/notes">Заметки</a>
-            <a href="/chat">Чат</a>
-            {% if user %}
-                <span class="user-email">{{ user.email }}</span>
-                <form method="post" action="/auth/logout" style="display:inline">
-                    <button type="submit" class="linklike">Выйти</button>
-                </form>
-            {% else %}
-                <a href="/auth/login">Вход</a>
-                <a href="/auth/register">Регистрация</a>
-            {% endif %}
-        </nav>
-    </header>
-<main>
-    {% block content %}{% endblock %}
-</main>
+  <header class="site-header">
+    <div class="wrap bar">
+      <a href="/" class="brand">
+        <img src="{{ url_for('static', path='img/logo.png') }}" alt="Logo">
+        <span>NoteHub</span>
+      </a>
+      <nav class="menu">
+        <a href="/">Главная</a>
+        <a href="/notes">Заметки</a>
+        <a href="/chat">Чат</a>
+        {% if user %}
+          <span class="user-email">{{ user.email }}</span>
+          <form method="post" action="/auth/logout" style="display:inline">
+            <button type="submit" class="linklike">Выйти</button>
+          </form>
+        {% else %}
+          <a href="/auth/login">Вход</a>
+          <a href="/auth/register">Регистрация</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
 
-<footer>
-    <p>© 2025 Note Hub</p>
-</footer>
+  <main>
+    <div class="wrap">
+      {% block content %}{% endblock %}
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">
+      © 2025 NoteHub
+    </div>
+  </footer>
 </body>
 </html>

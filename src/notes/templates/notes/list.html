@@ -3,18 +3,28 @@
 {% block title %}Мои заметки{% endblock %}
 
 {% block content %}
-<h1>Мои заметки</h1>
-<p><a class="button" href="/notes/new">Новая заметка</a></p>
-{% if notes and notes|length %}
-<ul class="note-list">
-    {% for n in notes %}
-    <li>
-        <a href="/notes/{{ n.id }}">{{ n.title }}</a>
-        <span class="muted">#{{ n.id }}</span>
-    </li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>Заметок пока нет.</p>
-{% endif %}
+  <div class="panel">
+    <div class="h1" style="display:flex;justify-content:space-between;align-items:center">
+      <span>Мои заметки</span>
+      <a class="btn" href="/notes/new">Новая заметка</a>
+    </div>
+    {% if notes and notes|length %}
+      <div class="grid cards" style="margin-top:6px">
+        {% for n in notes %}
+          <a class="card" href="/notes/{{ n.id }}">
+            <div class="h2">{{ n.title }}</div>
+            {% if n.categories and n.categories|length %}
+              <div class="note-tags">
+                {% for c in n.categories %}
+                  <span class="tag">{{ c.name }}</span>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty">Заметок пока нет</div>
+    {% endif %}
+  </div>
 {% endblock %}

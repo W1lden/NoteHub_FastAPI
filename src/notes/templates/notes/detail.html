@@ -3,24 +3,24 @@
 {% block title %}Заметка #{{ note.id }}{% endblock %}
 
 {% block content %}
-<h1>{{ note.title }}</h1>
-<article class="note-text">
-    <pre>{{ note.text }}</pre>
-</article>
-{% if note.categories and note.categories|length %}
-<p class="tags">
-    {% for c in note.categories %}
-    <span class="tag">{{ c.name }}</span>
-    {% endfor %}
-</p>
-{% endif %}
-<p>
-    {% if is_owner %}
-    <a class="button" href="/notes/{{ note.id }}/edit">Изменить</a>
-    <form method="post" action="/notes/{{ note.id }}/delete" style="display:inline">
-        <button type="submit" class="danger">Удалить</button>
-    </form>
+  <div class="panel">
+    <div class="h1">{{ note.title }}</div>
+    {% if note.categories and note.categories|length %}
+      <div class="note-tags">
+        {% for c in note.categories %}
+          <span class="tag">{{ c.name }}</span>
+        {% endfor %}
+      </div>
     {% endif %}
-</p>
-<p><a href="/notes">← К списку</a></p>
+    <div class="note-body" style="margin-top:14px">{{ note.text }}</div>
+    {% if is_owner %}
+      <div class="actions" style="margin-top:16px">
+        <a class="btn" href="/notes/{{ note.id }}/edit">Изменить</a>
+        <form method="post" action="/notes/{{ note.id }}/delete" style="display:inline">
+          <button type="submit" class="btn danger">Удалить</button>
+        </form>
+      </div>
+    {% endif %}
+    <div style="margin-top:12px"><a href="/notes/" class="btn ghost">← К списку</a></div>
+  </div>
 {% endblock %}

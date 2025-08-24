@@ -3,23 +3,29 @@
 {% block title %}Анонимный чат{% endblock %}
 
 {% block content %}
-<h1>Анонимный чат</h1>
+  <div class="panel chat-shell">
+    <div class="h1">Анонимный чат</div>
 
-<div id="prejoin">
-    <form id="nickname-form">
-        <label>Никнейм</label>
-        <input type="text" id="nickname" required>
-        <button type="submit">Войти в чат</button>
-    </form>
-</div>
+    <div id="prejoin">
+      <form id="nickname-form" class="form" style="max-width:520px">
+        <div class="field">
+          <label>Никнейм</label>
+          <input type="text" id="nickname" class="input" required>
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn">Войти в чат</button>
+        </div>
+      </form>
+    </div>
 
-<div id="chat" style="display:none">
-    <div id="history" class="chat-history"></div>
-    <form id="message-form">
-        <input type="text" id="message" placeholder="Напишите сообщение..." autocomplete="off">
-        <button type="submit">Отправить</button>
-    </form>
-</div>
+    <div id="chat" style="display:none">
+      <div id="history" class="chat-history"></div>
+      <form id="message-form" class="chat-form">
+        <input type="text" id="message" class="input" placeholder="Напишите сообщение..." autocomplete="off">
+        <button type="submit" class="btn">Отправить</button>
+      </form>
+    </div>
+  </div>
 
-<script src="{{ url_for('static', path='js/chat.js') }}"></script>
+  <script src="{{ url_for('static', path='js/chat.js') }}"></script>
 {% endblock %}

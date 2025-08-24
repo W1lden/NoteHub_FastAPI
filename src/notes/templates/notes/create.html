@@ -3,25 +3,26 @@
 {% block title %}Новая заметка{% endblock %}
 
 {% block content %}
-<h1>Новая заметка</h1>
-<form method="post" action="/notes/create" class="form">
-    <div class="row">
+  <div class="panel">
+    <div class="h1">Новая заметка</div>
+    <form method="post" action="/notes/create" class="form">
+      <div class="field">
         <label>Заголовок</label>
-        <input type="text" name="title" required>
-    </div>
-    <div class="row">
+        <input class="input" type="text" name="title" required>
+      </div>
+      <div class="field">
         <label>Текст</label>
-        <textarea name="text" rows="10"></textarea>
-    </div>
-    <div class="row">
+        <textarea class="textarea" name="text" rows="10"></textarea>
+      </div>
+      <div class="field">
         <label>Категории</label>
         {% if categories and categories|length %}
-          <select name="category_ids" multiple size="6">
+          <select class="select" name="category_ids" multiple size="6">
             {% for c in categories %}
-            <option value="{{ c.id }}">{{ c.name }}</option>
+              <option value="{{ c.id }}">{{ c.name }}</option>
             {% endfor %}
           </select>
-          <small class="hint">Зажмите Ctrl/⌘ для выбора нескольких</small>
+          <div class="muted" style="font-size:12px">Зажмите Ctrl/⌘ для выбора нескольких</div>
         {% else %}
           <div class="empty">
             Категорий пока нет. Сохраните заметку без категорий или создайте их в админке.
@@ -29,10 +30,10 @@
           </div>
         {% endif %}
       </div>
-         
-    <div class="actions">
-        <a href="/notes/" class="button ghost">Отмена</a>
-        <button type="submit" class="button">Сохранить</button>
-    </div>
-</form>
+      <div class="actions">
+        <a href="/notes/" class="btn ghost">Отмена</a>
+        <button type="submit" class="btn">Сохранить</button>
+      </div>
+    </form>
+  </div>
 {% endblock %}

@@ -1,17 +1,21 @@
 import json
 from datetime import datetime, timezone
+
 from fastapi import APIRouter, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
+
 from notes.core.redis import get_redis
 
 router = APIRouter()
 ws_router = APIRouter()
 connections = set()
 
+
 @router.get("/", response_class=HTMLResponse)
 async def chat_page(request: Request):
     templates = request.app.state.templates
     return templates.TemplateResponse("chat/chat.html", {"request": request})
+
 
 @ws_router.websocket("/ws/anon-chat")
 async def anon_chat_ws(websocket: WebSocket):
@@ -32,7 +36,9 @@ async def anon_chat_ws(websocket: WebSocket):
             "nickname": "",
             "text": f"{nickname} вошёл в чат",
         }
-        await r.rpush("chat:history", json.dumps(join_event, ensure_ascii=False))
+        await r.rpush(
+            "chat:history", json.dumps(join_event, ensure_ascii=False)
+        )
         await r.ltrim("chat:history", -1000, -1)
         for conn in list(connections):
             await conn.send_text(json.dumps(join_event, ensure_ascii=False))
@@ -57,7 +63,9 @@ async def anon_chat_ws(websocket: WebSocket):
             "nickname": "",
             "text": f"{nickname} вышел из чата",
         }
-        await r.rpush("chat:history", json.dumps(leave_event, ensure_ascii=False))
+        await r.rpush(
+            "chat:history", json.dumps(leave_event, ensure_ascii=False)
+        )
         await r.ltrim("chat:history", -1000, -1)
         connections.discard(websocket)
         for conn in list(connections):

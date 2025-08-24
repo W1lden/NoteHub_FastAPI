@@ -1,5 +1,7 @@
 from fastapi import APIRouter
-from notes.web import auth_router, chat_router, chat_ws_router, notes_router, main_router
+
+from notes.web import (auth_router, chat_router, chat_ws_router, main_router,
+                       notes_router)
 
 web_router = APIRouter()
 

@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from starlette.middleware.sessions import SessionMiddleware
 from fastapi.templating import Jinja2Templates
 from sqladmin import Admin
+from starlette.middleware.sessions import SessionMiddleware
 
 from notes.admin.auth import AdminAuth
 from notes.admin.views import CategoryAdmin, NoteAdmin, UserAdmin

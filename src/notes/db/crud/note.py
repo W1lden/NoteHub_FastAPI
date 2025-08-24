@@ -15,7 +15,6 @@ ModelType = TypeVar("ModelType", bound=Note)
 
 
 class CRUDNote(CRUDBase[ModelType]):
-
     async def create_with_categories(
         self,
         obj_in: dict,

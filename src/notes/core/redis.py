@@ -1,7 +1,9 @@
 from redis.asyncio import from_url
+
 from notes.core.config import settings
 
 _client = None
+
 
 async def get_redis():
     global _client

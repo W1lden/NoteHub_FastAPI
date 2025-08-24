@@ -13,7 +13,6 @@ ModelType = TypeVar("ModelType")
 
 
 class CRUDBase(Generic[ModelType]):
-
     def __init__(self, model: type[ModelType]) -> None:
         self.model = model
 

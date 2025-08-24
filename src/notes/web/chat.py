@@ -1,9 +1,13 @@
 import json
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Request, WebSocket, WebSocketDisconnect
+from fastapi import APIRouter, Depends, Request, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
+from notes.core.db import get_async_session
+from notes.db.models import User
 from notes.core.redis import get_redis
 
 router = APIRouter()
@@ -12,10 +16,13 @@ connections = set()
 
 
 @router.get("/", response_class=HTMLResponse)
-async def chat_page(request: Request):
+async def chat_page(request: Request, session: AsyncSession = Depends(get_async_session)):
     templates = request.app.state.templates
-    return templates.TemplateResponse("chat/chat.html", {"request": request})
-
+    user_id = request.session.get("user_id")
+    user = None
+    if user_id:
+        user = (await session.execute(select(User).where(User.id == user_id))).scalars().first()
+    return templates.TemplateResponse("chat/chat.html", {"request": request, "user": user})
 
 @ws_router.websocket("/ws/anon-chat")
 async def anon_chat_ws(websocket: WebSocket):

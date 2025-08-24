@@ -6,23 +6,25 @@
     <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
 </head>
 <body>
-<header>
-    <img src="{{ url_for('static', path='img/logo.png') }}" alt="Logo" height="40">
-    <nav>
-        <a href="/">Главная</a>
-        <a href="/notes">Заметки</a>
-        <a href="/chat">Чат</a>
-        {% if request.session.get("user_id") %}
-            <form method="post" action="/auth/logout" style="display:inline">
-                <button type="submit" class="linklike">Выйти</button>
-            </form>
-        {% else %}
-            <a href="/auth/login">Вход</a>
-            <a href="/auth/register">Регистрация</a>
-        {% endif %}
-    </nav>
-</header>
-
+    <header>
+        <a href="/" class="logo-link">
+            <img src="{{ url_for('static', path='img/logo.png') }}" alt="Logo" height="40">
+        </a>
+        <nav>
+            <a href="/">Главная</a>
+            <a href="/notes">Заметки</a>
+            <a href="/chat">Чат</a>
+            {% if user %}
+                <span class="user-email">{{ user.email }}</span>
+                <form method="post" action="/auth/logout" style="display:inline">
+                    <button type="submit" class="linklike">Выйти</button>
+                </form>
+            {% else %}
+                <a href="/auth/login">Вход</a>
+                <a href="/auth/register">Регистрация</a>
+            {% endif %}
+        </nav>
+    </header>
 <main>
     {% block content %}{% endblock %}
 </main>

@@ -52,7 +52,21 @@ footer {
   }
   .empty a { color: #0969da; text-decoration: none; margin-left: 6px; }
   .empty a:hover { text-decoration: underline; }
-  
+
+.user-email {
+    margin: 0 10px;
+    font-weight: 500;
+    color: #fff;
+    opacity: 0.9;
+}
+
+.logo-link {
+    display: inline-block;
+}
+
+.logo-link img {
+    display: block;
+}
 
 .form { max-width: 720px; display: grid; gap: 16px; }
 .row { display: flex; flex-direction: column; gap: 8px; align-items: stretch; }

@@ -14,7 +14,6 @@
     {% endfor %}
 </p>
 {% endif %}
-<p class="muted">Автор: {{ note.user_id }}</p>
 <p>
     {% if is_owner %}
     <a class="button" href="/notes/{{ note.id }}/edit">Изменить</a>

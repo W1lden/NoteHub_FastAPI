@@ -6,6 +6,9 @@ from fastapi.responses import HTMLResponse
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from notes.core.constants import (HISTORY_LAST_N_MESSAGES,
+                                  HISTORY_MAX_SAVE_LEN, LIST_END,
+                                  REDIS_CHAT_HISTORY_KEY)
 from notes.core.db import get_async_session
 from notes.core.redis import get_redis
 from notes.db.models import User
@@ -43,7 +46,9 @@ async def anon_chat_ws(websocket: WebSocket):
     connections.add(websocket)
     r = await get_redis()
     try:
-        history = await r.lrange("chat:history", -20, -1)
+        history = await r.lrange(
+            REDIS_CHAT_HISTORY_KEY, HISTORY_LAST_N_MESSAGES, LIST_END
+        )
         for item in history:
             await websocket.send_text(item)
         join_event = {
@@ -53,9 +58,9 @@ async def anon_chat_ws(websocket: WebSocket):
             "text": f"{nickname} вошёл в чат",
         }
         await r.rpush(
-            "chat:history", json.dumps(join_event, ensure_ascii=False)
+            REDIS_CHAT_HISTORY_KEY, json.dumps(join_event, ensure_ascii=False)
         )
-        await r.ltrim("chat:history", -1000, -1)
+        await r.ltrim(REDIS_CHAT_HISTORY_KEY, HISTORY_MAX_SAVE_LEN, LIST_END)
         for conn in list(connections):
             await conn.send_text(json.dumps(join_event, ensure_ascii=False))
         while True:
@@ -68,8 +73,12 @@ async def anon_chat_ws(websocket: WebSocket):
             }
             if not msg["text"]:
                 continue
-            await r.rpush("chat:history", json.dumps(msg, ensure_ascii=False))
-            await r.ltrim("chat:history", -1000, -1)
+            await r.rpush(
+                REDIS_CHAT_HISTORY_KEY, json.dumps(msg, ensure_ascii=False)
+            )
+            await r.ltrim(
+                REDIS_CHAT_HISTORY_KEY, HISTORY_MAX_SAVE_LEN, LIST_END
+            )
             for conn in list(connections):
                 await conn.send_text(json.dumps(msg, ensure_ascii=False))
     except WebSocketDisconnect:
@@ -80,9 +89,9 @@ async def anon_chat_ws(websocket: WebSocket):
             "text": f"{nickname} вышел из чата",
         }
         await r.rpush(
-            "chat:history", json.dumps(leave_event, ensure_ascii=False)
+            REDIS_CHAT_HISTORY_KEY, json.dumps(leave_event, ensure_ascii=False)
         )
-        await r.ltrim("chat:history", -1000, -1)
+        await r.ltrim(REDIS_CHAT_HISTORY_KEY, HISTORY_MAX_SAVE_LEN, LIST_END)
         connections.discard(websocket)
         for conn in list(connections):
             await conn.send_text(json.dumps(leave_event, ensure_ascii=False))

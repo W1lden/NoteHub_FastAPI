@@ -116,7 +116,7 @@ solva-notes-fastapi-final-W1lden/
 
 1. Клонируйте репозиторий:
 ```bash
-git clone https://github.com/Solva-technology/solva-notes-fastapi-final-W1lden.git
+git clone https://github.com/W1lden/NoteHub_FastAPI.git
 ```
 
 2. Создайте .env файл в каталоге src. Вот пример:
